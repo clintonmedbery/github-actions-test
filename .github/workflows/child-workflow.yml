@@ -1,0 +1,20 @@
+name: Child Workflow
+
+on:
+    workflow_dispatch:
+      inputs:
+        TEST_KEY:
+          required: true
+          type: string
+
+jobs:
+  child-task:
+    name: Child Task
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Test
+        run: |
+          echo "Child Task"
+          echo ${{ github.event.inputs.TEST_KEY }}
