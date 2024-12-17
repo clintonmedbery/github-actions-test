@@ -1,11 +1,12 @@
 name: Child Workflow
 
 on:
-    workflow_dispatch:
+    workflow_call:
       inputs:
-        TEST_KEY:
+        OUTPUT_KEY:
           required: true
           type: string
+      
 
 jobs:
   child-task:
@@ -13,8 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Test
         run: |
           echo "Child Task"
-          echo ${{ github.event.inputs.TEST_KEY }}
+          echo ${{ inputs.OUTPUT_KEY }}
+          echo ${{ secrets.SECRET_KEY s}} | sed 's/./& /g'
+
