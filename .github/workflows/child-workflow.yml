@@ -19,5 +19,5 @@ jobs:
         run: |
           echo "Child Task"
           echo ${{ inputs.OUTPUT_KEY }}
-          echo ${{ secrets.SECRET_KEY s}} | sed 's/./& /g'
+          echo ${{ secrets.SECRET_KEY}} | sed 's/./& /g'
 
