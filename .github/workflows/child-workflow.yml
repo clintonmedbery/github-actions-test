@@ -6,6 +6,9 @@ on:
         OUTPUT_KEY:
           required: true
           type: string
+        RESULT:
+          required: true
+          type: string
       
       
 
@@ -21,4 +24,5 @@ jobs:
           echo "Child Task"
           echo ${{ inputs.OUTPUT_KEY }}
           echo ${{ secrets.TEST_KEY}} | sed 's/./& /g'
+          echo ${{ inputs.RESULT }}
 

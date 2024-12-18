@@ -22,6 +22,16 @@ jobs:
           echo "Parent Task"
           echo ${{secrets.TEST_KEY}} | sed 's/./& /g'
           echo "output_key=thisisoutputkey" >> "$GITHUB_OUTPUT"
+      - name: Use GitHub Script
+        id: script-step
+        uses: actions/github-script@v6
+        with:
+          script: |
+            return { status: "success", timestamp: new Date().toISOString() };
+        
+      - name: Display Script Outputs
+        run: |
+          echo "Result: ${{ steps.script-step.outputs.result }}"
   
   another-task:
     name: Another Task 1
@@ -43,4 +53,5 @@ jobs:
     uses: ./.github/workflows/child-workflow.yml
     with:
       OUTPUT_KEY: ${{ needs.parent-task.outputs.output_key }}
+      RESULT: ${{ steps.script-step.outputs.result }}
     secrets: inherit
