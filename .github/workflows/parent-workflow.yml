@@ -53,5 +53,5 @@ jobs:
     uses: ./.github/workflows/child-workflow.yml
     with:
       OUTPUT_KEY: ${{ needs.parent-task.outputs.output_key }}
-      RESULT: ${{ needs.steps.script-step.outputs.result }}
+      RESULT: ${{ needs.script-step.outputs.result }}
     secrets: inherit
