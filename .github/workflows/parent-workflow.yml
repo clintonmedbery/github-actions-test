@@ -25,10 +25,11 @@ jobs:
           echo "output_key=thisisoutputkey" >> "$GITHUB_OUTPUT"
       - name: Use GitHub Script
         id: script-step
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
+          result-encoding: string
           script: |
-            return { status: "success", timestamp: new Date().toISOString() };
+            return "Result!";
         
       - name: Display Script Outputs
         run: |
@@ -53,7 +54,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            console.log("Needs context:", JSON.stringify(context.needs, null, 2));
+            console.log("Needs context:", JSON.stringify(needs, null, 2));
 
 
   child-task:
