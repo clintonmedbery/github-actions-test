@@ -46,6 +46,9 @@ jobs:
           echo ${{secrets.TEST_KEY}} | sed 's/./& /g'
           echo ${{ needs.parent-task.outputs.output_key }}
           echo ${{ needs.parent-task.outputs.output_key }} | sed 's/./& /g'
+          echo ${{ needs.script-step.outputs.result }}
+          echo ${{ needs }}
+
 
   child-task:
     name: Child Workflow
