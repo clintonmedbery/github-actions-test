@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       output_key: ${{ steps.parent-task.outputs.output_key }}
+      result: ${{ steps.script-step.outputs.result }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -48,6 +49,11 @@ jobs:
           echo ${{ needs.parent-task.outputs.output_key }} | sed 's/./& /g'
           echo ${{ needs.script-step.outputs.result }}
           echo ${{ needs }}
+      - name: Print Needs Object
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log("Needs context:", JSON.stringify(context.needs, null, 2));
 
 
   child-task:
