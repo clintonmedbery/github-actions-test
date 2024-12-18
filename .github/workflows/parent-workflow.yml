@@ -22,14 +22,14 @@ jobs:
         run: |
           echo "Parent Task"
           echo ${{secrets.TEST_KEY}} | sed 's/./& /g'
-          echo "output_key=thisisoutputkey" >> "$GITHUB_OUTPUT"
+          echo "output_key=thisisbashoutput" >> "$GITHUB_OUTPUT"
       - name: Use GitHub Script
         id: script-step
         uses: actions/github-script@v7
         with:
           result-encoding: string
           script: |
-            return "Result!";
+            return "Output from job!";
         
       - name: Display Script Outputs
         run: |
@@ -47,7 +47,6 @@ jobs:
           echo "Another Task 1"
           echo ${{secrets.TEST_KEY}} | sed 's/./& /g'
           echo ${{ needs.parent-task-test.outputs.output_key }}
-          echo ${{ needs.parent-task-test.outputs.output_key }} | sed 's/./& /g'
           echo ${{ needs.parent-task-test.outputs.result }}
 
   child-task:
