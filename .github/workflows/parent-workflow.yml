@@ -48,7 +48,7 @@ jobs:
           echo ${{secrets.TEST_KEY}} | sed 's/./& /g'
           echo ${{ needs.parent-task.outputs.output_key }}
           echo ${{ needs.parent-task.outputs.output_key }} | sed 's/./& /g'
-          echo ${{ needs.script-step.outputs.result }}
+          echo ${{ needs.parent-task.outputs.result }}
           echo ${{ needs }}
       - name: Print Needs Object
         uses: actions/github-script@v6
@@ -63,5 +63,5 @@ jobs:
     uses: ./.github/workflows/child-workflow.yml
     with:
       OUTPUT_KEY: ${{ needs.parent-task.outputs.output_key }}
-      RESULT: ${{ needs.script-step.outputs.result }}
+      RESULT: ${{ needs.parent-task.outputs.result }}
     secrets: inherit
