@@ -1,0 +1,18 @@
+{
+  "name": "github-actions-test",
+  "version": "1.0.0",
+  "description": "Fake package to test CI",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"test\"",
+    "version": "semantic-release"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "semantic-release": "^24.2.1"
+  }
+}
