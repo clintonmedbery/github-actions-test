@@ -1,8 +1,9 @@
 name: Notify Slack on New Tag
 
 on:
-  create:
-    types: [tag]
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   notify-slack:
