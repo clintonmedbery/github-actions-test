@@ -1,7 +1,7 @@
 name: Notify Slack on New Tag
 
 on:
-  push:
+  create:
     tags:
       - '*'  # Trigger on any tag push
 
