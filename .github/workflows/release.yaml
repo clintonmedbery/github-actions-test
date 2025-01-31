@@ -57,7 +57,7 @@ jobs:
         run: |
           set +e  # Allow the command to fail without stopping the workflow
           EXISTS=$(gh api repos/clintonmedbery/github-actions-test/actions/artifacts \
-            | jq '[.artifacts[] | select(.name == "shared-datas")] | length')
+            | jq '[.artifacts[] | select(.name == "shared-data")] | length')
 
           if [ "$EXISTS" -eq "0" ]; then
             echo "Artifact not found or expired."
