@@ -49,7 +49,30 @@ jobs:
           echo "commit_message<<EOF" >> $GITHUB_OUTPUT
           echo "$commit_message" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-  
+      
+      - name: Download shared artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: shared-data
+      
+      - name: Save Tag To Artifact
+        run: |
+          if [ ! -s data.txt ]; then
+            echo "File is empty. Writing new data..."
+            echo "tag=${{ steps.tag_info.outputs.tag }}" > $tag.txt
+          else
+            echo "File is not empty. No changes made."
+          fi
+      
+      - name: Display the file contents
+        run: cat data.txt
+      
+      - name: Re-upload the artifact (overwriting the old one)
+        uses: actions/upload-artifact@v4
+        with:
+          name: shared-data
+          path: data.txt
+          
       - name: Send Slack Notification
         run: |
           payload=$(jq -n --arg tag "${{ steps.tag_info.outputs.tag }}" \
