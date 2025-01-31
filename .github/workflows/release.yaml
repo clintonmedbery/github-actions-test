@@ -54,6 +54,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: shared-data
+          github-token: ${{ secrets.GITHUB_TOKEN }} # token with actions:read permissions on target repo
+          repository: clintonmedbery/github-actions-test
       
       - name: Save Tag To Artifact
         run: |
@@ -72,7 +74,7 @@ jobs:
         with:
           name: shared-data
           path: data.txt
-          
+
       - name: Send Slack Notification
         run: |
           payload=$(jq -n --arg tag "${{ steps.tag_info.outputs.tag }}" \
