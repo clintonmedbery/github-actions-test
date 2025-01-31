@@ -78,7 +78,7 @@ jobs:
         run: |
           if [ ! -s data.txt ]; then
             echo "File is empty. Writing new data..."
-            echo "tag=${{ steps.tag_info.outputs.tag }}" > $tag.txt
+            echo "tag=${{ steps.tag_info.outputs.tag }}" > data.txt
           else
             echo "File is not empty. No changes made."
           fi
