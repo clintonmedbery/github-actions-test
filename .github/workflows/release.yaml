@@ -55,7 +55,7 @@ jobs:
         run: |
           set +e  # Allow the command to fail without stopping the workflow
           gh api repos/${{ github.repository }}/actions/artifacts \
-            | jq '.artifacts[] | select(.name == "temporary-data")' > artifact.json || true
+            | jq '.artifacts[] | select(.name == "shared-data")' > artifact.json || true
           ARTIFACT_EXISTS=$(cat artifact.json | wc -l)
       
           if [ "$ARTIFACT_EXISTS" -eq "0" ]; then
