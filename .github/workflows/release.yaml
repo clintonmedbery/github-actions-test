@@ -80,7 +80,7 @@ jobs:
             echo "File is empty. Writing new data..."
             echo "tag=${{ steps.tag_info.outputs.tag }}" > data.txt
           else
-            echo "File is not empty. No changes made."
+            echo "File is not empty. No changes made!"
           fi
       
       - name: Display the file contents
