@@ -50,30 +50,49 @@ jobs:
           echo "$commit_message" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Try to download artifact
-        id: download_step
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set +e  # Allow the command to fail without stopping the workflow
-          EXISTS=$(gh api repos/clintonmedbery/github-actions-test/actions/artifacts \
-            | jq '[.artifacts[] | select(.name == "shared-data")] | length')
+      # - name: Try to download artifact
+      #   id: download_step
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     set +e  # Allow the command to fail without stopping the workflow
+      #     EXISTS=$(gh api repos/clintonmedbery/github-actions-test/actions/artifacts \
+      #       | jq '[.artifacts[] | select(.name == "shared-data")] | length')
 
-          if [ "$EXISTS" -eq "0" ]; then
-            echo "Artifact not found or expired."
-            echo "EXISTS=false" >> $GITHUB_ENV
-          else
-            echo "Artifact found."
-            echo "ARTIFACT_EXISTS=true" >> $GITHUB_ENV
-          fi
+      #     if [ "$EXISTS" -eq "0" ]; then
+      #       echo "Artifact not found or expired."
+      #       echo "ARTIFACT_EXISTS=false" >> $GITHUB_ENV
+      #     else
+      #       echo "Artifact found."
+      #       echo "ARTIFACT_EXISTS=true" >> $GITHUB_ENV
+      #     fi
       
-      - name: Download shared artifact
-        if: env.ARTIFACT_EXISTS == 'true'
-        uses: actions/download-artifact@v4
-        with:
-          name: shared-data
-          github-token: ${{ secrets.GITHUB_TOKEN }} # token with actions:read permissions on target repo
-          repository: clintonmedbery/github-actions-test
+      # - name: Download shared artifact
+      #   if: env.ARTIFACT_EXISTS == 'true'
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: shared-data
+      #     github-token: ${{ secrets.GITHUB_TOKEN }} # token with actions:read permissions on target repo
+      #     repository: clintonmedbery/github-actions-test
+      - name: Check if artifact exists
+        run: |
+          # Fetch the artifact download URL using GitHub CLI
+          ARTIFACT_ID=$(gh api repos/${{ github.repository }}/actions/artifacts \
+            | jq -r '.artifacts[] | select(.name == "shared-data") | .id')
+
+          if [ -z "$ARTIFACT_ID" ]; then
+            echo "Artifact not found."
+            exit 1
+          fi
+
+          # Download the artifact
+          echo "Downloading artifact with ID: $ARTIFACT_ID"
+          gh api \
+            repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip \
+            --method GET --output artifact.zip
+
+      - name: Unzip the artifact
+        run: unzip artifact.zip -d ./artifact
       
       - name: Save Tag To Artifact
         run: |
