@@ -49,8 +49,25 @@ jobs:
           echo "commit_message<<EOF" >> $GITHUB_OUTPUT
           echo "$commit_message" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Try to download artifact
+        id: download_step
+        run: |
+          set +e  # Allow the command to fail without stopping the workflow
+          gh api repos/${{ github.repository }}/actions/artifacts \
+            | jq '.artifacts[] | select(.name == "temporary-data")' > artifact.json || true
+          ARTIFACT_EXISTS=$(cat artifact.json | wc -l)
+      
+          if [ "$ARTIFACT_EXISTS" -eq "0" ]; then
+            echo "Artifact not found or expired."
+            echo "ARTIFACT_EXISTS=false" >> $GITHUB_ENV
+          else
+            echo "Artifact found."
+            echo "ARTIFACT_EXISTS=true" >> $GITHUB_ENV
+          fi
       
       - name: Download shared artifact
+        if: env.ARTIFACT_EXISTS == 'true'
         uses: actions/download-artifact@v4
         with:
           name: shared-data
